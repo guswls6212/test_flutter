@@ -32,16 +32,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return MyListItem(index: index);
-        },
-      ),
-    );
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: MyListView()
+        // ListView.builder(
+        //   itemCount: 10,
+        //   itemBuilder: (context, index) {
+        //     return MyListItem(index: index);
+        //   },
+        // ),
+        );
   }
 }
 
@@ -81,6 +82,42 @@ class _MyListItemState extends State<MyListItem> {
               )
             : null,
       ),
+    );
+  }
+}
+
+class MyListView extends StatefulWidget {
+  const MyListView({Key? key}) : super(key: key);
+
+  @override
+  State<MyListView> createState() => _MyListViewState();
+}
+
+class _MyListViewState extends State<MyListView> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return ExpansionTile(
+          title: Text('Item $index'),
+          trailing: Icon(
+            _isExpanded ? Icons.expand_less : Icons.expand_more,
+          ),
+          onExpansionChanged: (bool expanded) {
+            setState(() {
+              _isExpanded = expanded;
+            });
+          },
+          children: <Widget>[
+            ListTile(
+              title: Text('Expanded Item $index'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
